@@ -7,10 +7,10 @@ endef
 default: help
 
 init: prepare build clean
-	@echo "--> Ожидание инициализации базы данных (20 секунд)..."
-	@sleep 20
 	@echo "--> Установка зависимостей Composer..."
 	@make composer
+	@echo "--> Ожидание инициализации базы данных (10 секунд)..."
+	@sleep 10
 	@echo "--> Создание и применение миграций БД..."
 	@make migrate
 	@echo "✅ Проект успешно установлен и запущен!"
@@ -18,6 +18,7 @@ init: prepare build clean
 
 prepare:
 	@$(call echo_green, "Prepare environment")
+	@if [ ! -f ./.env ]; then cp ./.env.example ./.env; fi;
 	@if [ ! -f ./src/.env ]; then cp ./src/.env.example ./src/.env; fi;
 	@mkdir -p ./src/var/cache ./src/var/log
 	@chmod -R 777 ./src/var/cache ./src/var/log
@@ -25,11 +26,10 @@ prepare:
 clean:
 	@$(call echo_green, "Clean cache and logs")
 	@rm -rf ./src/var/cache/* ./src/var/log/*
-	@docker compose exec php php bin/console cache:clear
 
 composer:
-	@$(call echo_green, "Composer dump-autoload")
-	@docker compose exec php composer dump-autoload --optimize
+	@$(call echo_green, "Composer install")
+	@docker compose exec php composer install
 
 build:
 	@$(call echo_green, "Docker build and up")
