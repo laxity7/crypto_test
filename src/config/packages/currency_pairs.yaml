@@ -1,0 +1,5 @@
+parameters:
+  currency_allowed_pairs:
+    - 'BTCEUR'
+    - 'ETHEUR'
+    - 'LTCEUR'

@@ -1,0 +1,51 @@
+@host = http://localhost:8000
+
+# ----------------------------------------------------
+# Эндпоинт: Получение курсов за последние 24 часа
+# ----------------------------------------------------
+
+### Запрос курса EUR/BTC за последние 24 часа (успешный)
+GET {{host}}/api/rates/last-24h?pair=EUR/BTC
+Accept: application/json
+
+### Запрос курса EUR/ETH за последние 24 часа (успешный)
+GET {{host}}/api/rates/last-24h?pair=EUR/ETH
+Accept: application/json
+
+### Запрос курса EUR/LTC за последние 24 часа (успешный)
+GET {{host}}/api/rates/last-24h?pair=EUR/LTC
+Accept: application/json
+
+
+# ----------------------------------------------------
+# Эндпоинт: Получение курсов за конкретный день
+# ----------------------------------------------------
+
+### Запрос курса EUR/BTC за конкретную дату (успешный)
+GET {{host}}/api/rates/day?pair=EUR/BTC&date=2025-09-25
+Accept: application/json
+
+### Запрос курса EUR/ETH за конкретную дату (успешный)
+GET {{host}}/api/rates/day?pair=EUR/ETH&date=2025-09-25
+Accept: application/json
+
+
+# ----------------------------------------------------
+# Тестирование ошибочных сценариев
+# ----------------------------------------------------
+
+### ОШИБКА: Неверно указана валютная пара
+GET {{host}}/api/rates/last-24h?pair=EUR/USD
+Accept: application/json
+
+### ОШИБКА: Не указан обязательный параметр 'pair'
+GET {{host}}/api/rates/last-24h
+Accept: application/json
+
+### ОШИБКА: Неверный формат даты
+GET {{host}}/api/rates/day?pair=EUR/BTC&date=25.09.2025
+Accept: application/json
+
+### ОШИБКА: Не указан обязательный параметр 'date'
+GET {{host}}/api/rates/day?pair=EUR/BTC
+Accept: application/json

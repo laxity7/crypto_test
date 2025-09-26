@@ -1,0 +1,3 @@
+parameters:
+  app.rate_update_schedules:
+    - { provider: 'binance', frequency: '5 minute' }

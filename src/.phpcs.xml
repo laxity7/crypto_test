@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<ruleset name="Custom PSR-12 Ruleset">
+    <!-- Указываем стандарт PSR12 как базовый -->
+    <rule ref="PSR12">
+        <exclude name="PSR12.Files.FileHeader"/>
+        <exclude name="PSR12.Files.OpenTag"/>
+        <exclude name="Generic.Files.EndFileNewline"/>
+        <exclude name="PSR2.Files.EndFileNewline"/>
+    </rule>
+
+    <!-- Указываем пути, которые нужно проверять -->
+    <file>./config</file>
+    <file>./src</file>
+
+    <!-- Настройка максимальной длины строки -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <!-- Установить максимальную длину строки -->
+            <property name="lineLimit" value="165"/>
+            <!-- Установить мягкое ограничение, после которого будет предупреждение -->
+            <property name="absoluteLineLimit" value="0"/>
+            <!-- Игнорировать комментарии -->
+            <property name="ignoreComments" value="true"/>
+        </properties>
+    </rule>
+
+    <!-- Настройка отступов в методах -->
+    <rule ref="Squiz.Functions.FunctionDeclarationArgumentSpacing"/>
+    <rule ref="Squiz.Functions.FunctionDeclaration.SpaceAfterFunction"/>
+    <!-- Убираем лишние пустые строки между методами -->
+    <rule ref="Squiz.WhiteSpace.FunctionSpacing">
+        <properties>
+            <property name="spacing" value="1"/>
+            <property name="spacingBeforeFirst" value="0"/>
+            <property name="spacingAfterLast" value="0"/>
+        </properties>
+    </rule>
+
+    <!-- Приводим ключевые слова и константы к нижнему регистру -->
+    <rule ref="Generic.PHP.LowerCaseKeyword"/>
+    <rule ref="Generic.PHP.LowerCaseConstant"/>
+
+    <!-- Запрещаем Йода-стиль -->
+    <rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
+
+    <!-- Запрещаем присваивания в условиях -->
+    <rule ref="Generic.ControlStructures.InlineControlStructure"/>
+
+    <!-- Запрещаем использование табов -->
+    <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
+
+    <!-- Запрещаем альтернативный синтаксис -->
+    <rule ref="Generic.PHP.DisallowAlternativePHPTags"/>
+
+    <!-- Запрещаем короткие теги -->
+    <rule ref="Generic.PHP.DisallowShortOpenTag"/>
+
+    <!-- Запрещаем использование функций -->
+    <rule ref="Generic.PHP.ForbiddenFunctions">
+        <properties>
+            <property name="forbiddenFunctions" type="array">
+                <element key="print" value="echo"/>
+                <element key="sizeof" value="count"/>
+                <element key="delete" value="unset"/>
+                <element key="is_null" value="null"/>
+                <element key="create_function" value="null"/>
+                <element key="key_exists" value="array_key_exists"/>
+                <element key="print" value="null"/>
+                <element key="echo" value="null"/>
+                <element key="var_dump" value="null"/>
+                <element key="print_r" value="null"/>
+                <element key="die" value="null"/>
+                <element key="dd" value="null"/>
+            </property>
+        </properties>
+    </rule>
+
+    <rule ref="PSR1.Classes.ClassDeclaration">
+        <exclude-pattern>modules/*/migrations/*</exclude-pattern>
+    </rule>
+    <rule ref="Squiz.Classes.ValidClassName">
+        <exclude-pattern>modules/*/migrations/*</exclude-pattern>
+    </rule>
+
+    <!-- Временно разрешаем не CamelCase и подчеркивания в методах -->
+    <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+        <exclude-pattern>*</exclude-pattern>
+    </rule>
+    <rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
+        <exclude-pattern>*</exclude-pattern>
+    </rule>
+    <rule ref="PSR1.Methods.CamelCapsMethodName">
+        <exclude-pattern>*</exclude-pattern>
+    </rule>
+
+    <!-- Настраиваем таймауты для больших файлов или долгих операций -->
+    <runtime max="900"/>
+</ruleset>

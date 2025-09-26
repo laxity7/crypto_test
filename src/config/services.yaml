@@ -1,0 +1,32 @@
+parameters:
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  App\:
+    resource: '../src/*'
+    exclude:
+      - '../src/DependencyInjection/'
+      - '../src/Entity/'
+      - '../src/Kernel.php'
+
+  App\Service\Provider\BinanceProvider:
+    arguments:
+      $binanceApiBaseUrl: '%env(BINANCE_API_BASE_URL)%'
+      $allowedPairs: '%currency_allowed_pairs%'
+
+  App\Service\ExchangeService: ~
+
+  App\Controller\Api\RateController:
+    arguments:
+      $allowedPairs: '%currency_allowed_pairs%'
+
+  App\EventSubscriber\ApiExceptionSubscriber:
+    arguments:
+      $kernelEnv: '%kernel.environment%'
+
+  App\Scheduler\RateUpdateScheduler:
+    arguments:
+      $schedulesConfig: '%app.rate_update_schedules%'

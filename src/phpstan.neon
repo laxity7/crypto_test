@@ -1,0 +1,26 @@
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+    level: 10
+    paths:
+        - src
+        - config
+    parallel:
+        maximumNumberOfProcesses: 100
+        minimumNumberOfJobsPerProcess: 10
+    reportUnmatchedIgnoredErrors: false
+
+    scanDirectories:
+        - config
+        - src
+
+    tmpDir: var/phpstancache
+
+    strictRules:
+        disallowedEmpty: false
+        booleansInConditions: false
+        disallowedShortTernary: false
+        uselessCast: false
+        disallowedLooseComparison: false
+        strictFunctionCalls: false

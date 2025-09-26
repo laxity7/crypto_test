@@ -1,0 +1,42 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    container_name: crypto_api_php
+    ports:
+      - "9001:9001" # веб-интерфейса Supervisor
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE}?serverVersion=8.0&charset=utf8mb4
+      - MESSENGER_TRANSPORT_DSN=doctrine://default
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: crypto_api_nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+
+  db:
+    image: mysql:8.0
+    container_name: crypto_api_db
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-crypto_api}
+      MYSQL_USER: ${MYSQL_USER:-user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootp}
+    volumes:
+      - ./docker/data/mysql:/var/lib/mysql
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
